@@ -210,7 +210,7 @@ def login_callback(provider_id):
         _logger.debug('Received login response from '
                       '%s: %s' % (provider.name, response))
 
-        if response is None:
+        if response is None or isinstance(response, Exception):
             do_flash('Access was denied to your %s '
                      'account' % provider.name, 'error')
             return _security.login_manager.unauthorized(), None
