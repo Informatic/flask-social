@@ -27,14 +27,17 @@ config = {
     }
 }
 
+GRAPH_VERSION = '2.9'
 
 def get_api(connection, **kwargs):
-    return facebook.GraphAPI(getattr(connection, 'access_token'))
+    return facebook.GraphAPI(getattr(connection, 'access_token'),
+                             version=GRAPH_VERSION)
 
 
 def get_provider_user_id(response, **kwargs):
     if response:
-        graph = facebook.GraphAPI(response['access_token'])
+        graph = facebook.GraphAPI(response['access_token'],
+                                  version=GRAPH_VERSION)
         profile = graph.get_object("me")
         return profile['id']
     return None
@@ -45,7 +48,7 @@ def get_connection_values(response, **kwargs):
         return None
 
     access_token = response['access_token']
-    graph = facebook.GraphAPI(access_token)
+    graph = facebook.GraphAPI(access_token, version=GRAPH_VERSION)
     profile = graph.get_object("me")
     profile_url = "https://facebook.com/app_scoped_user_id/%s/" % profile['id']
     image_url = "https://graph.facebook.com/%s/picture" % profile['id']
